@@ -1,7 +1,7 @@
 --To include this file, use
 --dofile('csv.lua')
 
-[[ Test data
+--[[ Test data
 a,b,c
 d,2,3
 e,4,5
