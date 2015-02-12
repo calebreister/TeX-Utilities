@@ -54,7 +54,7 @@ function tableToTeX(array, add_hline)
     
     --Insert data
     for y=1, #array do
-        if add_hline == true then
+        if add_hline == true and y ~= 1 then
             result = result .. "\\hline "
         end
         for x=1, #array[y] do
@@ -66,9 +66,6 @@ function tableToTeX(array, add_hline)
         if y < #array then
             result = result .. " \\\\"
         end
-    end
-    if add_hline == true then
-        result = result .. " \\\\\\hline"
     end
     
     return result
