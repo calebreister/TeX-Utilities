@@ -57,14 +57,14 @@ function tableToTeX(array, inject, inject_on)
     local result = ""
     local line = 1 --keeps track of add_to index, not used if inject_on is nil
     if inject_on ~= nil then
-        table.sort(add_to)
+        table.sort(inject_on)
     end
     
     --Insert data
     for y=1, #array do
         if inject ~= nil and y ~= 1 then
             if inject_on == nil or inject_on[line] == y then
-                result = result .. "\\hline "
+                result = result .. inject .. ' '
                 line = line + 1
             end
         end
@@ -94,31 +94,32 @@ j,14,15
 ]]
 
 --[[Sample LuaTeX usage: test.tex
-    \documentclass[12pt,letterpaper]{article}
-    \usepackage[utf8x]{luainputenc}
-    \def\arraystretch{2} %Give tabular environments internal padding
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8x]{luainputenc}
+\usepackage{luacode} %\luaexec macro: allows for '\\hline' in inline code
+\def\arraystretch{2} %Give tabular environments internal padding
 
-    \begin{document}
-     	\begin{tabular}{|c|c|c|}
-     		\hline
-		    \directlua{
-			    require('csv.lua')
-			    t = dataToTable('test.csv')
-			    tex.sprint(tableToTeX(t, true))
-		    } \\
-		    \hline
-	    \end{tabular}
-	    \hspace{2cm}
-     	\begin{tabular}{c|c|c}
-		    \directlua{
-			    tex.sprint(tableToTeX(t, true, {2}))
-		    }
-	    \end{tabular}
-	    \hspace{2cm}
-     	\begin{tabular}{c|c|c}
-		    \directlua{
-			    tex.sprint(tableToTeX(t, true, {2, 4, 6, 8}))
-		    }
-	    \end{tabular}
-    \end{document}
+\begin{document}
+ 	\begin{tabular}{|c|c|c|}
+ 		\hline
+		\luaexec{
+			require('csv.lua')
+			t = dataToTable('test.csv')
+			tex.sprint(tableToTeX(t, '\\hline'))
+		} \\
+		\hline
+	\end{tabular}
+	\hspace{2cm}
+ 	\begin{tabular}{c|c|c}
+		\luaexec{
+			tex.sprint(tableToTeX(t, '\\hline', {2}))
+		}
+	\end{tabular}
+	\hspace{2cm}
+ 	\begin{tabular}{c|cc}
+		\luaexec{
+			tex.sprint(tableToTeX(t, '\\hline', {2, 4, 6, 8}))
+		}
+	\end{tabular}
+\end{document}
 ]]
