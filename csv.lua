@@ -93,6 +93,8 @@ i,12,13
 j,14,15
 ]]
 
+--------------------------------------------------------------------------------
+
 --[[Sample LuaTeX usage: test.tex
 \documentclass[12pt,letterpaper]{article}
 \usepackage[utf8x]{luainputenc}
@@ -122,4 +124,61 @@ j,14,15
 		}
 	\end{tabular}
 \end{document}
+]]
+
+--------------------------------------------------------------------------------
+
+--[[Useful Forum Post (http://tex.stackexchange.com/questions/33096/which-lua-environment-should-i-use-with-luatex-lualatex)
+	There are two questions here. You should consider asking one question at a time for your next posts.
+	
+	Now to the Lua code environment. Don't use any of them if you can. Just do
+	
+	\directlua{  require("myfile")  }
+	
+	and put all of your Lua code in that file. See another answer for a list of directories TeX searches for the file myfile.lua.
+	
+	If for some reason you can't do that (when you are only allowed to ship only one file for example) you should use the environment luacode* (with *) from the luacode package. That has the safest character catcodes. That means you can say something like:
+	
+	\begin{luacode*}
+	texio.write_nl("This is a string with\n a newline in it")
+	tex.print(-2, string.format( "5 %% 4 is %d ", 5 % 4))
+	\end{luacode*}
+	
+	(You need the -2 as the first argument to tex.sprint(), because the % sign (resulting from the double %% is interpreted from TeX as a comment sign after the environment closes. TeX sees at the end of the environment 5 % 4 is 1 and treats the % as the end of input. So you need to tell TeX that this % is a regular character. You have two choices: either pass TeX a string like this: string.format("5 \\%% 4 is ...") so that TeX sees 5 \% 4 is ... as you would do with normal text or make % a normal letter, so TeX does not recognize it as a comment sign. To do that you have to change the category code. The easiest way is to assign the special catcode table -2 to tex.print(). It is a safe catcode table, no characters have a special meaning.)
+	
+	If you need to use TeX macros in Lua code, use the luacode environment (without *):
+	
+	\begin{luacode}
+	    local current_page = tonumber(\thepage)
+	    texio.write_nl("We are on page " .. current_page)
+	\end{luacode}
+	
+	And if you need to put your code in a command, use \luaexec:
+	
+	\newcommand\myrepeat[2]{%
+	\luaexec{
+	  for i=1,#1 do
+	     tex.sprint("\luatexluaescapestring{#2}")
+	   end
+	 }}
+	
+	\myrepeat{4}{Hello world}
+	
+	(you can't use the environments directly in a \newcommand, but you could use \luacodestar ... \endluacodestar if you really want the environment functionality). The \luatexluaescapestring{} is necessary to escape input characters like " that would be harmful to the Lua string.
+	
+	You have also asked if there is a shortcut such as the $...$ for math typesetting. No, there is none. IMO that is not such a big problem, as Lua code (in practice, but YMMV) is only used at a few points (with macros or with environments for example) and not so much in running text. Mostly in packages. (See the documentation to the luacolor package for example. Even if you don't understand the package in full detail at the first glance, you can see where the TeX code is with the \directlua calls, aliased in the example to \LuaCol@directlua and how the Lua code is separated from it in another file. See that there are only very few lines of Lua code inside the \LuaCol@directlua commands? In my opinion we can learn a lot from this code, as Heiko Oberdiek is an excellent package writer.)
+	
+	Now to your second question about Saving variables. If you don't declare your variables local, they are accessible in all Lua chunks. But you are asking to pass Lua code to TeX. You can do this for example:
+	
+	\begin{luacode*}
+	tex.sprint("\setcounter{mycounter}{" .. my_lua_value .. "}")
+	\end{luacode*}
+	
+	to create a \setcounter command with your value. Or you can use the tex.count Lua interface:
+	
+	\begin{luacode*}
+	tex.count[10] = my_lua_value
+	\end{luacode*}
+	
+	and your value is in \count10. But this is a bit dangerous as you have to be certain to use a free counter.
 ]]
