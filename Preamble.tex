@@ -1,0 +1,100 @@
+%Characters
+\usepackage{fontspec}
+\usepackage{amsmath, amsfonts, amssymb, amstext}
+\usepackage{commath}
+\usepackage{xfrac} %\sfrac (slanted fraction)
+\usepackage{gensymb}
+\usepackage{cancel} %\cancel & \cancelto commands
+\usepackage{steinmetz} %Phasor angle notation
+
+%Utilities
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[margin=1in]{geometry}
+\usepackage[parfill]{parskip}
+\usepackage{hyperref}
+\usepackage{comment}
+
+%Programming
+\usepackage{xparse}
+\usepackage{ifthen}
+\usepackage{luacode}
+\directlua{require('csv')}
+
+%Redfines commands in some AMS packages
+\usepackage{unicode-math}
+
+%Enable hyperlinked TOC
+\hypersetup{
+	%linktocpage,
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+}
+
+%Graphics configuration
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./img/}}
+
+%Basic styling
+\def\arraystretch{2} %Give tabular environments internal padding
+
+%Character overrides
+\defaultfontfeatures{Ligatures=TeX}
+\renewcommand{\j}{\ensuremath{\mitBbbj}} % doublestruck imaginary ⅉ symbol
+\newcommand{\e}{\mitBbbe} %doublestruck exponential e symbol
+\newcommand{\E}[1]{\ensuremath{{\scriptstyle\msansE{#1}}}} %Scientific notation
+\newcommand{\pr}[1]{\ensuremath{\left( #1 \right)}} %Parenthisized
+
+%Macros
+\newcommand{\note}[1]{\textbf{Note: }#1}
+\newcommand{\quickimg}[1]{\includegraphics[width=\textwidth]{#1}\smallskip}
+
+\newcommand{\eqntable}[1]{
+	%This is a tabular block that is useful for creating a list of
+	%equations. The name of each equation goes on the right and
+	%the equation itself goes on the left.
+	\begin{tabular}{ r | >{$\displaystyle}l<{$} }
+		#1
+	\end{tabular}
+}
+
+\DeclareDocumentCommand{\intg}{O{} O{} m m}{
+	%Integral with optional limits.
+	%Enables cleaner integration expressisions
+	%#1 & #2: optional limits of integration
+	%#3: integrand
+	%#4: variable of integration
+	\ensuremath{
+		\int_{#1}^{#2}#3\,d{#4}
+	}
+}
+
+\DeclareDocumentCommand{\limits}{m m m}{
+	%Vertical bar with upper and lower limits
+	%#1: expression
+	%#2: lower limit
+	%#3: upper limit
+	\left. #1 \right|_{#2}^{#3}
+}
+
+\DeclareDocumentCommand{\sidebyside}{O{.5} O{.5} m m O{} O{}}{
+	%This is an xparse macro that places two images side by side.
+	%#1 & #2: optionally define the fraction of \textwidth each  image should use.
+	%#3 & #4: define the image files to use.
+	%#5: optional caption
+	%#6: optional label
+	\begin{figure}[H]
+		\begin{minipage}{#1\textwidth}
+			\includegraphics[width=\textwidth]{#3}
+		\end{minipage}
+		\begin{minipage}{#2\textwidth}
+			\includegraphics[width=\textwidth]{#4}
+		\end{minipage}
+		%Show caption if the user provides one.
+		\ifthenelse{\equal{#5}{}}{}{\caption{#5}}
+		\ifthenelse{\equal{#6}{}}{}{\label{#6}}
+	\end{figure}
+}
