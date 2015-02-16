@@ -26,6 +26,8 @@
 %An extensive list of characters: texdoc unimath-symbols
 \usepackage{unicode-math}
 
+\def\arraystretch{1.5} %Give tabular and array environments internal padding
+
 %Enable hyperlinked TOC
 \hypersetup{
 	%linktocpage,
@@ -38,9 +40,6 @@
 %Graphics configuration
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 \graphicspath{{./img/}}
-
-%Basic styling
-\def\arraystretch{2} %Give tabular environments internal padding
 
 %Character overrides
 \defaultfontfeatures{Ligatures=TeX}
