@@ -1,0 +1,3 @@
+###TeX-Utilities
+
+This repository contains my LaTeX preamble and the script(s) that I wrote to assist in LaTeX projects. In has several useful macros including a condensed integration syntax and a new scientific notation macro that uses the small E notation. The Lua file contains a set of functions that I wrote to convert a separated value file (CSV, TSV, ...) into a Lua table so that the data can be manipulated or converted to a different format. Currently, I only have a function that converts it to the LaTeX tabular format, but it would be very easy to write a function that can transform it into almost any other text format (such as JSON or HTML). My intent is to use it in LuaTeX documents so that I can conveniently make tabulars from spreadsheets.
