@@ -5,32 +5,34 @@ This repository contains my LaTeX preamble and the script(s) that I wrote to ass
 ###Sample Usage of csv.lua
 This code contains an example of how to use csv.lua to convert a CSV file to a LaTeX tabular when the project is built. More information about the functions used can be found in csv.lua.
 
-    \documentclass[12pt,letterpaper]{article}
-    \usepackage[utf8x]{luainputenc}
-    \usepackage{luacode} %\luaexec macro: allows for '\\hline' in inline code
-    \directlua{require('csv.lua')}
-    
-    \def\arraystretch{2} %Give tabular environments internal padding
+```TeX
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8x]{luainputenc}
+\usepackage{luacode} %\luaexec macro: allows for '\\hline' in inline code
+\directlua{require('csv.lua')}
 
-    \begin{document}
-     	\begin{tabular}{|c|c|c|}
-     		\hline
-		    \luaexec{
-			    t = dataToTable('test.csv')
-			    tex.sprint(tableToTeX(t, '\\hline'))
-		    } \\
-		    \hline
-	    \end{tabular}
-	    \hspace{2cm}
-     	\begin{tabular}{c|c|c}
-		    \luaexec{
-			    tex.sprint(tableToTeX(t, '\\hline', {2}))
-		    }
-	    \end{tabular}
-	    \hspace{2cm}
-     	\begin{tabular}{c|cc}
-		    \luaexec{
-			    tex.sprint(tableToTeX(t, '\\hline', {2, 4, 6, 8}))
-		    }
-	    \end{tabular}
-    \end{document}
+\def\arraystretch{2} %Give tabular environments internal padding
+
+\begin{document}
+	\begin{tabular}{|c|c|c|}
+	    \hline
+	    \luaexec{
+		    t = dataToTable('test.csv')
+		    tex.sprint(tableToTeX(t, '\\hline'))
+	    } \\
+	    \hline
+	\end{tabular}
+	\hspace{2cm}
+	\begin{tabular}{c|c|c}
+	    \luaexec{
+		    tex.sprint(tableToTeX(t, '\\hline', {2}))
+	    }
+	\end{tabular}
+	\hspace{2cm}
+	\begin{tabular}{c|cc}
+	    \luaexec{
+		    tex.sprint(tableToTeX(t, '\\hline', {2, 4, 6, 8}))
+	    }
+	\end{tabular}
+\end{document}
+```
