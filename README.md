@@ -25,13 +25,13 @@ This code contains an example of how to use csv.lua to convert a CSV file to a L
 	\hspace{2cm}
 	\begin{tabular}{c|c|c}
 	    \luaexec{
-		    tex.sprint(tableToTeX(t, '\\hline', {2}))
+		    tex.sprint(tableToTeX(t, '\\hline', {2})) % Add hline only below title row
 	    }
 	\end{tabular}
 	\hspace{2cm}
 	\begin{tabular}{c|cc}
 	    \luaexec{
-		    tex.sprint(tableToTeX(t, '\\hline', {2, 4, 6, 8}))
+		    tex.sprint(tableToTeX(t, '\\hline', {2, 4, 6, 8})) % Add hline to rows 2, 4, 6, and 8
 	    }
 	\end{tabular}
 \end{document}
