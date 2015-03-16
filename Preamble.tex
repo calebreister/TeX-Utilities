@@ -54,7 +54,7 @@
 
 %"Unit" macro for defining SI units. Math mode characters are acceptable.
 %Note:this macro injects a space between the unit and whatever is before it in math mode, but not in text.
-\newcommand{\un}[1]{
+\newcommand{\n}[1]{
 	\ifmmode \mathrm{\ #1}
 	\else $\mathrm{#1}$
 	\fi
