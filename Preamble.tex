@@ -45,12 +45,20 @@
 \defaultfontfeatures{Ligatures=TeX}
 \renewcommand{\j}{\ensuremath{\mitBbbj}} % doublestruck imaginary ⅉ symbol
 \newcommand{\e}{\mitBbbe} %doublestruck exponential e symbol
-\newcommand{\E}[1]{\ensuremath{{\scriptstyle\mathsf{E}{#1}}}} %Scientific notation
-\newcommand{\pr}[1]{\ensuremath{\left( #1 \right)}} %Parenthisized
 
 %Macros
 \newcommand{\note}[1]{\textbf{Note: }#1}
 \newcommand{\quickimg}[1]{\includegraphics[width=\textwidth]{#1}\smallskip}
+\newcommand{\E}[1]{\ensuremath{{\scriptstyle\mathsf{E}{#1}}}} %Scientific notation
+\newcommand{\pr}[1]{\ensuremath{\left( #1 \right)}} %Parenthisized expression
+
+%"Unit" macro for defining SI units. Math mode characters are acceptable.
+%Note:this macro injects a space between the unit and whatever is before it in math mode, but not in text.
+\newcommand{\un}[1]{
+	\ifmmode \mathrm{\ #1}
+	\else $\mathrm{#1}$
+	\fi
+}
 
 \newcommand{\eqntable}[1]{
 	%This is a tabular block that is useful for creating a list of
