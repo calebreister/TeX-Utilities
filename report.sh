@@ -2,10 +2,10 @@
 
 # $1 - folder name to use
 
-mkdir $1
+mkdir -p $1
 cd $1
 
-mkdir data img
+mkdir -p data/sim img
 
 cp -n ~/Templates/LaTeX/* ./
 mv ./Report.tex ./$1.tex
